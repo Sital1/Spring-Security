@@ -37,7 +37,7 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
         dataSource.setUrl("jdbc:mysql://localhost/spring");
         dataSource.setUsername("mysql");
-        dataSource.setPassword("Uranium12@");
+        dataSource.setPassword("");
 
         return dataSource;
     }
