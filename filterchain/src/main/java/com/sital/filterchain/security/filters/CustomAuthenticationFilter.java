@@ -5,12 +5,14 @@ import com.sital.filterchain.security.authentication.CustomAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
@@ -31,10 +33,11 @@ public class CustomAuthenticationFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
         // cast the filter to http filter
-        var http = (HttpServletRequest) servletRequest;
+        var httpRequest = (HttpServletRequest) servletRequest;
+        var httpResponse = (HttpServletResponse) servletResponse;
 
         // get the authorization header
-        String authorization = http.getHeader("Authorization");
+        String authorization = httpRequest.getHeader("Authorization");
 
         // some logic
 
@@ -42,14 +45,19 @@ public class CustomAuthenticationFilter implements Filter {
 
         var auth = new CustomAuthentication(authorization,null);
 
-        Authentication authenticationResult = manager.authenticate(auth);
+        try{
+            Authentication authenticationResult = manager.authenticate(auth);
 
-        // continue the filter chain
+            // continue the filter chain
 
-        if (authenticationResult.isAuthenticated()){
-            SecurityContextHolder.getContext().setAuthentication(authenticationResult);
-            filterChain.doFilter(servletRequest,servletResponse);
+            if (authenticationResult.isAuthenticated()){
+                SecurityContextHolder.getContext().setAuthentication(authenticationResult);
+                filterChain.doFilter(servletRequest,servletResponse);
+            }
+        }catch (AuthenticationException exception){
+                httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
+
 
     }
 
