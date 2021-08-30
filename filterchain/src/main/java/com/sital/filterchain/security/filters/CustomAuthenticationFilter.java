@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.*;
 
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class CustomAuthenticationFilter implements Filter {
+public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
 
     // inject the authentication manager
@@ -24,20 +25,13 @@ public class CustomAuthenticationFilter implements Filter {
   @Autowired
     private AuthenticationManager manager;
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
-    }
+
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
-        // cast the filter to http filter
-        var httpRequest = (HttpServletRequest) servletRequest;
-        var httpResponse = (HttpServletResponse) servletResponse;
+    public void doFilterInternal(HttpServletRequest servletRequest, HttpServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
         // get the authorization header
-        String authorization = httpRequest.getHeader("Authorization");
+        String authorization = servletRequest.getHeader("Authorization");
 
         // some logic
 
@@ -55,14 +49,11 @@ public class CustomAuthenticationFilter implements Filter {
                 filterChain.doFilter(servletRequest,servletResponse);
             }
         }catch (AuthenticationException exception){
-                httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            servletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
 
 
     }
 
-    @Override
-    public void destroy() {
-        Filter.super.destroy();
-    }
+
 }
