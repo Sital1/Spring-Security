@@ -4,7 +4,9 @@ import com.sital.multipleauthentication.entities.Otp;
 import com.sital.multipleauthentication.repositories.OtpRepository;
 import com.sital.multipleauthentication.security.authentications.OtpAuthentication;
 import com.sital.multipleauthentication.security.authentications.UsernamePasswordAuthentication;
+import com.sital.multipleauthentication.security.managers.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,10 +28,13 @@ public class UsernamePasswordAuthFilter extends OncePerRequestFilter {
 
     private OtpRepository otpRepository;
 
+    private TokenManager tokenManager;
+
     @Autowired
-    public UsernamePasswordAuthFilter(AuthenticationManager authenticationManager, OtpRepository otpRepository) {
+    public UsernamePasswordAuthFilter(@Lazy AuthenticationManager authenticationManager, OtpRepository otpRepository, @Lazy TokenManager tokenManager) {
         this.authenticationManager = authenticationManager;
         this.otpRepository = otpRepository;
+        this.tokenManager = tokenManager;
     }
 
 
@@ -72,8 +77,12 @@ public class UsernamePasswordAuthFilter extends OncePerRequestFilter {
             // send it to the manager and the manager will find the proper authentication provider
             authenticationManager.authenticate(auth);
 
+            var token = UUID.randomUUID().toString();
+
+            tokenManager.add(token);
+
             // we issue a token
-            httpServletResponse.setHeader("Authorization", UUID.randomUUID().toString());
+            httpServletResponse.setHeader("Authorization", token);
         }
 
 
