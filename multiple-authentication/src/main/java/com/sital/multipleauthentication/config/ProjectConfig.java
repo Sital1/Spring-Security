@@ -5,20 +5,22 @@ import com.sital.multipleauthentication.security.filters.UsernamePasswordAuthFil
 import com.sital.multipleauthentication.security.providers.OtpAuthenticationProvider;
 import com.sital.multipleauthentication.security.providers.TokenAuthenticationProvider;
 import com.sital.multipleauthentication.security.providers.UsernamePasswordAuthenticationProvider;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
+@EnableAsync
 public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -78,4 +80,15 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
                 BasicAuthenticationFilter.class
         ).addFilterAfter(tokenAuthenticationFilter,BasicAuthenticationFilter.class);
     }
+
+    // we can use and initalzing bean to change the mode of the SecurityContext holder srategy
+    // can change the system property as well
+    @Bean
+    public InitializingBean initializingBean(){
+        return () -> {
+            SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+        }   ;
+    }
+
+
 }
