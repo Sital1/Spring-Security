@@ -14,6 +14,8 @@ public class CsrfApplication {
     // Without CSRF attacker can force us to do us action on the application form other source but the application
     // Can delete the data, change pw, sth.
 
-
+    /*
+    Some architecture doesn't need CSRF. For example OAUTH2
+     */
 
 }
