@@ -12,7 +12,17 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
         super.configure(http);
 
         // generally don't disable the csrf
-        http.csrf().disable();
+        // it comes the default
 
+        // GET, TRACE, HEAD, OPTIONS --> no need to specify any thing special
+
+        // When a page is loaded Spring Security generates a token.
+
+        // Can't call mutating actions POST,PUT,DELETE without csrf token
+
+        // Right now works for Login but not other endpoints cause CSRF token has not been added
+       // http.csrf().disable();
     }
+
+
 }

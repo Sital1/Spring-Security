@@ -10,4 +10,10 @@ public class CsrfApplication {
         SpringApplication.run(CsrfApplication.class, args);
     }
 
+
+    // Without CSRF attacker can force us to do us action on the application form other source but the application
+    // Can delete the data, change pw, sth.
+
+
+
 }
