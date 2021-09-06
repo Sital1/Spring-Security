@@ -13,6 +13,8 @@ public class CrossOriginResourceSharingApplication {
             - What happens when app consume multiple origin
               - > origin --> domain
             - CORS -> policy when multiple origin are allowed and which
+
+            - PROTECTS THE CLIENT NOT THE SERVER.
          */
 
     }

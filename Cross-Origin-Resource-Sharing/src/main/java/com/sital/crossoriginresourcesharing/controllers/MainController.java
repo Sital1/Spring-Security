@@ -1,6 +1,7 @@
 package com.sital.crossoriginresourcesharing.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +21,12 @@ public class MainController {
      */
     @PostMapping("/test")
     @ResponseBody
+
+    /*
+    In a real world scenario we want to configure the origins.
+    The app can be deployed in multiple environments.
+      @CrossOrigin("*") // will allow origins
+     */
     public String test(){
         System.out.println(":(");
         return "TEST!";
