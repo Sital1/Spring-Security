@@ -14,7 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
     Grant Type -> Flow in which a client gets the token
       authorization code/ pkce
       password --> deprecated
-      client-credentials
+      client-credentials  --> not related to the user
       refresh_token
       implict -- > depcreated
 
@@ -39,14 +39,20 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .secret("secret1")
                 .scopes("read")
                 .authorizedGrantTypes("password") // deprecated
-        // authorization code grant type
-        .and()
+                // authorization code grant type
+                .and()
                 .withClient("client2")
                 .secret("secret2")
                 .scopes("read")
                 .authorizedGrantTypes("authorization_code")
                 // authorization_code requires redirect uri
-                .redirectUris("http://localhost:9090");
+                .redirectUris("http://localhost:9090")
+                // client credentials grant type
+                .and()
+                .withClient("client3")
+                .secret("secret3")
+                .scopes("read")
+                .authorizedGrantTypes("client_credentials");
     }
 
     @Override
