@@ -8,6 +8,11 @@ public class TokenImplementationApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(TokenImplementationApplication.class, args);
+
+        /*
+        Opaque tokens are mainly used for verifying and don't have any data in them.
+         */
+
     }
 
 }
