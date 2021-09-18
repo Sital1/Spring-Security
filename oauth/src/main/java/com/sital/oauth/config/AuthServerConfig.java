@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
       authorization code/ pkce
       password --> deprecated
       client-credentials  --> not related to the user
-      refresh_token
+      refresh_token // use this value to obtain the new access token without forcing user to authenticate.
       implict -- > depcreated
 
       Specify who are the clients
@@ -38,13 +38,13 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .withClient("client1")
                 .secret("secret1")
                 .scopes("read")
-                .authorizedGrantTypes("password") // deprecated
+                .authorizedGrantTypes("password","refresh_token") // deprecated
                 // authorization code grant type
                 .and()
                 .withClient("client2")
                 .secret("secret2")
                 .scopes("read")
-                .authorizedGrantTypes("authorization_code")
+                .authorizedGrantTypes("authorization_code","refresh_token")
                 // authorization_code requires redirect uri
                 .redirectUris("http://localhost:9090")
                 // client credentials grant type
