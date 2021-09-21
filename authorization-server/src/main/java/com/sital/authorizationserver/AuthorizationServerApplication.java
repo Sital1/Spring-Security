@@ -8,6 +8,10 @@ public class AuthorizationServerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AuthorizationServerApplication.class, args);
+
+        /*
+        Only define Authorizatuion Server
+         */
     }
 
 }
