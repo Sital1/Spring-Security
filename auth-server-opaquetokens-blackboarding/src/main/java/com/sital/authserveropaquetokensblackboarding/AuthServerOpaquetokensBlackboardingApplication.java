@@ -1,0 +1,13 @@
+package com.sital.authserveropaquetokensblackboarding;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class AuthServerOpaquetokensBlackboardingApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(AuthServerOpaquetokensBlackboardingApplication.class, args);
+    }
+
+}
